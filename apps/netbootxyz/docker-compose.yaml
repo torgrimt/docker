@@ -1,9 +1,10 @@
 services:
   netbootxyz:
     image: ghcr.io/netbootxyz/netbootxyz
-    container_name: netbootxyz
-    environment:
-      - MENU_VERSION=2.0.47 # optional
+    container_name: netboot
+    env_file: .env
+    #environment:
+    #  - MENU_VERSION=2.0.47 # optional
     volumes:
       - ./config:/config # optional
       - ./assets:/assets # optional
@@ -12,4 +13,8 @@ services:
       - 69:69/udp
 #      - 8080:80 #optional nginx port.
     restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.netboot.rule=Host(`$NETBOOT_VAR_URL`)"
+      - "traefik.http.routers.netboot.entrypoints=web"
 
