@@ -1,0 +1,31 @@
+services:
+  zabbix-proxy:
+    image: zabbix/zabbix-proxy-sqlite3:latest
+    container_name: zabbix-proxy
+    restart: unless-stopped
+    network_mode: host
+    environment:
+      - DB_SERVER_HOST=localhost
+      - ZBX_SERVER_HOST=zabbix.teigstad.no
+      - ZBX_SERVER_PORT=10051
+      - ZBX_HOSTNAME=tos-proxy
+      - ZBX_PROXYMODE=0  # 0 - active, 1 - passive
+      - ZBX_PROXYCONFIGFREQUENCY=3600
+      - ZBX_PROXYDATACOLLECTFREQUENCY=1
+      - ZBX_STARTPOLLERS=5
+      - ZBX_STARTPINGERS=1
+      - ZBX_STARTDISCOVERERS=1
+      - ZBX_STARTHTTPPOLLERS=1
+      - ZBX_CACHESIZE=8M
+      - ZBX_STARTDBSYNCERS=4
+      - ZBX_HISTORYCACHESIZE=16M
+      - ZBX_HISTORYINDEXCACHESIZE=4M
+      - ZBX_LOGSLOWQUERIES=3000
+      - ZBX_TLSPSKIDENTITY=tos-proxy
+      - ZBX_TLSPSKFILE=/var/lib/zabbix/enc/psk
+      - ZBX_TLSCONNECT=psk
+      - ZBX_TIMEOUT=10
+    volumes:
+      - ./db_data:/var/lib/zabbix/db_data
+      - ./enc:/var/lib/zabbix/enc
+
