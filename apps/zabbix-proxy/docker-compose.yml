@@ -4,11 +4,12 @@ services:
     container_name: zabbix-proxy
     restart: unless-stopped
     network_mode: host
+    env_file: .env
     environment:
       - DB_SERVER_HOST=localhost
-      - ZBX_SERVER_HOST=zabbix.teigstad.no
+      - ZBX_SERVER_HOST=$ZABBIX-PROXY_VAR_SERVER_HOST
       - ZBX_SERVER_PORT=10051
-      - ZBX_HOSTNAME=tos-proxy
+      - ZBX_HOSTNAME=$ZABBIX-PROXY_VAR_HOSTNAME
       - ZBX_PROXYMODE=0  # 0 - active, 1 - passive
       - ZBX_PROXYCONFIGFREQUENCY=3600
       - ZBX_PROXYDATACOLLECTFREQUENCY=1
@@ -21,7 +22,7 @@ services:
       - ZBX_HISTORYCACHESIZE=16M
       - ZBX_HISTORYINDEXCACHESIZE=4M
       - ZBX_LOGSLOWQUERIES=3000
-      - ZBX_TLSPSKIDENTITY=tos-proxy
+      - ZBX_TLSPSKIDENTITY=$ZABBIX-PROXY_VAR_TLSPSKIDENTITY
       - ZBX_TLSPSKFILE=/var/lib/zabbix/enc/psk
       - ZBX_TLSCONNECT=psk
       - ZBX_TIMEOUT=10
