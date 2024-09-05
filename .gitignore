@@ -1,3 +1,6 @@
 # ikke ta med env files
 *.env
 .env
+
+# Ikke ta med backupen
+backup/**
