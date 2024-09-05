@@ -1,0 +1,21 @@
+services:
+  openhab:
+    image: openhab/openhab:4.1.0-debian
+    container_name: openhab
+    env_file: .env
+    volumes:
+      - /etc/localtime:/etc/localtime
+      - /etc/timezone:/etc/timezone
+      - ./ssh:/openhab/.ssh
+      - ./addons:/openhab/addons
+      - ./conf:/openhab/conf
+      - ./userdata:/openhab/userdata
+    network_mode: host
+    restart: always
+    environment:
+      - CRYPTO_POLICY=unlimited
+      - EXTRA_JAVA_OPTS=${OPENHAB_EXTRA_JAVA_OPTS}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.uptime.rule=Host(`$OPENHAB_VAR_URL`)"
+      - "traefik.http.routers.uptime.entrypoints=web"

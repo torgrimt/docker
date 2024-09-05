@@ -1,0 +1,6 @@
+#
+## Copy this file to .env
+#
+
+OPENHAB_VAR_URL=openhab.something.com
+EXTRA_JAVA_OPTS="-Duser.timezone=Europe/Berlin -Dorg.jupnp.network.useInterfaces=eno1 -Dorg.jupnp.network.useAddresses=192.168.0.65"
