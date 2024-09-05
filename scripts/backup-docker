@@ -1,0 +1,8 @@
+#!/bin/bash
+
+#
+## Backs up files from gitignore.
+#
+
+## huskelapp
+git ls-files -o -i --directory --exclude-standard
