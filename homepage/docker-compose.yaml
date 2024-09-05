@@ -12,10 +12,6 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.homepage.rule=Host(`homepage.tromso.snerre`)"
       - "traefik.http.routers.homepage.entrypoints=web"
-      - "kuma.homepage.docker.name=homepage"
-      - "kuma.homepage.docker.docker_container=homepage"
-      - "kuma.homepage.docker.docker_host=1"
-      - "kuma.homepage.docker.parent="D"
     environment:
       PUID: $PUID
       PGID: $PGID
