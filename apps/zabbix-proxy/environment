@@ -2,6 +2,6 @@
 ## Copy this file to .env
 #
 
-ZABBIX-PROXY_VAR_SERVER_HOST=your.sever.lan
-ZABBIX-PROXY_VAR_HOSTNAME=your-proxy
-ZABBIX-PROXY_VAR_TLSPSKIDENTITY=proxy-identity
+ZABBIX_PROXY_VAR_SERVER_HOST=your.sever.lan
+ZABBIX_PROXY_VAR_HOSTNAME=your-proxy
+ZABBIX_PROXY_VAR_TLSPSKIDENTITY=proxy-identity
