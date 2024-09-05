@@ -1,0 +1,4 @@
+#!/bin/bash
+
+echo "Reloading config cache from server"
+docker exec -it zabbix-proxy zabbix_proxy -R config_cache_reload

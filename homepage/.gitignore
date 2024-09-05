@@ -1,4 +1,0 @@
-# ikke ta med env files
-*.env
-.env
-config/**
