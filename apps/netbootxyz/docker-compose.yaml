@@ -1,4 +1,3 @@
-version: "2.1"
 services:
   netbootxyz:
     image: ghcr.io/netbootxyz/netbootxyz
@@ -9,8 +8,8 @@ services:
       - ./config:/config # optional
       - ./assets:/assets # optional
     ports:
-      - 3000:3000
+      - 3150:3000 # Webapp
       - 69:69/udp
-      - 8080:80 #optional
+#      - 8080:80 #optional nginx port.
     restart: unless-stopped
 

@@ -1,0 +1,5 @@
+#
+## Copy this file to .env
+#
+
+UPTIMEKUMA_VAR_URL=uptime.something.com
