@@ -1,0 +1,18 @@
+#!/bin/bash
+
+#
+## Lister alle docker dns names
+#
+
+u=$(find /home/$(whoami)/docker/apps/  -name .env | xargs grep URL | awk -F "=" '{print $2}')
+
+echo "Fant Følgende dns navn:"
+echo "$u"
+
+# Tester dns
+echo
+echo "Tester dns..."
+for p in $u ; do
+	echo -n $p
+	printf "\t $(host $p >/dev/null 2>&1 && echo OK || echo BÆD)\n"
+done
