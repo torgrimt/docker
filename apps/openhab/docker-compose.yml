@@ -1,6 +1,6 @@
 services:
   openhab:
-    image: openhab/openhab:4.1.0-debian
+    image: openhab/openhab:4.2.1-debian
     container_name: openhab
     env_file: .env
     volumes:
@@ -14,7 +14,9 @@ services:
     restart: always
     environment:
       - CRYPTO_POLICY=unlimited
-      - EXTRA_JAVA_OPTS=${OPENHAB_EXTRA_JAVA_OPTS}
+      - EXTRA_JAVA_OPTS=$OPENHAB_EXTRA_JAVA_OPTS
+      - OPENHAB_HTTP_PORT=$OPENHAB_VAR_HTTP_PORT
+      - OPENHAB_HTTPS_PORT=$OPENHAB_VAR_HTTPS_PORT
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.uptime.rule=Host(`$OPENHAB_VAR_URL`)"
