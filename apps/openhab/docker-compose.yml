@@ -17,6 +17,9 @@ services:
       - EXTRA_JAVA_OPTS=$OPENHAB_EXTRA_JAVA_OPTS
       - OPENHAB_HTTP_PORT=$OPENHAB_VAR_HTTP_PORT
       - OPENHAB_HTTPS_PORT=$OPENHAB_VAR_HTTPS_PORT
+      - USER_ID=$OPENHAB_VAR_USER_ID
+      - GROUP_ID=$OPENHAB_VAR_GROUP_ID
+
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.uptime.rule=Host(`$OPENHAB_VAR_URL`)"
