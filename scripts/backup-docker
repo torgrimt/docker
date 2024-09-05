@@ -1,8 +1,56 @@
 #!/bin/bash
 
 #
-## Backs up files from gitignore.
+## Backs up docker stuffs that is not in git.
 #
 
-## huskelapp
-git ls-files -o -i --directory --exclude-standard
+h=$(hostname -f)
+d=$(date -I)
+backupdir="/home/$(whoami)/docker/backup/$h/docker/$d/"
+skip="zabbix-proxy portainer_agent"
+
+
+# Stop if user is not in sudo group
+if [ -z "$(groups $whoami | grep sudo)" ]; then
+        echo 'user is not in sudo group'
+        exit 1
+fi
+
+echo "$d Starting backup off $h to $backupdir"
+mkdir -p $backupdir
+
+# Stop if backup dir is gay
+if [ ! -d "$backupdir" ]; then
+echo "backupdir not available, exiting..."
+exit 1
+fi
+
+echo
+cd /home/$(whoami)/docker/
+for n in $(git ls-files -o -i --directory --exclude-standard | grep -v backup | awk -F "/" '{print $2}' | uniq )
+do
+printf "[$n]\n"
+
+        # skipper dem i skiplisten
+        if [[ $skip =~ $n ]]; then
+                printf "\tSkipper....\n"
+                continue
+        fi
+
+	p="/home/$(whoami)/docker/apps/"
+	printf "\tPauser..\n"
+        /usr/bin/docker pause $n >/dev/null 2>&1
+        sleep 3
+	printf "\tPakker ned...\n"
+	sudo /usr/bin/tar -C $p -zcf $backupdir/$d-$n.tar.gz $n
+	sudo chown $(whoami):$(whoami) $backupdir/$d-$n.tar.gz
+	printf "\tUnpauser..\n"
+        /usr/bin/docker unpause $n >/dev/null 2>&1
+	sleep 3
+	printf "\tDone..\n"
+
+done
+
+echo 
+echo "All done :)"
+
