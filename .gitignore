@@ -4,3 +4,7 @@
 
 # Ikke ta med backupen
 backup/**
+
+# Lokale variaasjoner liker vi
+local/**
+apps/local/**
