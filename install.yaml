@@ -1,0 +1,8 @@
+- name: Install Docker
+  hosts: localhost
+  become: yes
+  roles:
+    - role: geerlingguy.docker
+      docker_users:
+        - torgrimt
+
