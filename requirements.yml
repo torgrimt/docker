@@ -1,2 +1,6 @@
-- name: geerlingguy.docker
-  src: https://github.com/geerlingguy/ansible-role-docker
+---
+roles:
+  - name: geerlingguy.docker
+    src: https://github.com/geerlingguy/ansible-role-docker
+collections:
+  - name: community.docker
