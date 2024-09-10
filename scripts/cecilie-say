@@ -1,0 +1,36 @@
+#!/bin/bash
+
+#
+## Script for å sende ku til cecilie
+#
+
+clear
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+
+
+/usr/games/cowsay $1
+
+
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo

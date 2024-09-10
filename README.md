@@ -5,7 +5,7 @@ Docker compose filer for diverse homelab stash.
 ```
 echo "torgrimt    ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/admin
 ansible-galaxy role install -r requirements.yml
-ansible-playbook install.yaml
+ansible-playbook install-docker.yaml
 ```
 
 ## Apps
