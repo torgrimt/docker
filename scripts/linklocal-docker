@@ -1,0 +1,23 @@
+#!/bin/bash
+
+#
+## Lage symlinker til kjørende containere
+#
+
+l=/home/torgrimt/docker/local
+
+for fn in `docker ps --format "table {{.Names}}" | grep -v NAMES`; do
+	echo "Container: $fn"
+	c=$(docker inspect --format='{{index (index .Config.Labels "com.docker.compose.project.working_dir")}}' $fn)
+	echo "=> $c"
+	
+	lol="$l/$fn"
+	# Lag symlink om den ikke finnes
+	if [ ! -L $lol ]; then
+		echo "=> Lager symlink $fn -> $lol"
+  		ln -s $c $lol
+	fi
+
+done
+
+
