@@ -14,5 +14,6 @@ echo
 echo "Tester dns..."
 for p in $u ; do
 	echo -n $p
-	printf "\t $(host $p >/dev/null 2>&1 && echo OK || echo BÆD)\n"
+	r=$(host $p | awk '{ print $4 }')
+	printf "\t $(host $p >/dev/null 2>&1 && printf "OK\t$r" || printf "BÆD")\n"
 done
