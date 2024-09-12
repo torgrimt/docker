@@ -13,3 +13,9 @@ her ligger alle apper...
 
 ## Scripts
 Scripts for diverse..
+
+
+## Huskelapp
+
+Finne version:
+docker image inspect --format '{{json .}}' "ghcr.io/netbootxyz/netbootxyz" | jq -r '. | {Id: .Id, Digest: .Digest, RepoDigests: .RepoDigests, Labels: .Config.Labels}
