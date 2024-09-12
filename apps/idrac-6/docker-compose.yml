@@ -1,0 +1,52 @@
+services:
+  idrac1:
+    image: domistyle/idrac6:v0.9
+    restart: always
+    env_file: .env    
+    container_name: idrac1
+    ports:
+      - $IDRAC1_VAR_PORT:5800
+      - $IDRAC1_VAR_VNC:5900
+    environment:
+      - IDRAC_HOST=$IDRAC1_VAR_HOST
+      - IDRAC_USER=$IDRAC1_VAR_USER
+      - IDRAC_PASSWORD=$IDRAC1_VAR_PASSWORD
+    # Experimental! To directly mount an iso as iDRAC virtual media, 
+    # uncomment the below and set to a filename that appears in /vmedia
+      # - VIRTUAL_ISO=name_of_iso.iso
+    volumes:
+      - ./app:/app
+      - ./vmedia:/vmedia
+      - ./screenshots:/screenshots
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.idrac1.rule=Host(`$IDRAC1_VAR_URL`)"
+      - "traefik.http.routers.idrac1.entrypoints=web"
+      - "traefik.http.services.homeassistant.loadbalancer.server.port=$IDRAC1_VAR_PORT"
+
+
+  idrac2:
+    image: domistyle/idrac6:v0.9
+    restart: always
+    env_file: .env
+    container_name: idrac2
+    ports:
+      - $IDRAC2_VAR_PORT:5800
+      - $IDRAC2_VAR_VNC:5900
+    environment:
+      - IDRAC_HOST=$IDRAC2_VAR_HOST
+      - IDRAC_USER=$IDRAC2_VAR_USER
+      - IDRAC_PASSWORD=$IDRAC2_VAR_PASSWORD
+    # Experimental! To directly mount an iso as iDRAC virtual media,
+    # uncomment the below and set to a filename that appears in /vmedia
+      # - VIRTUAL_ISO=name_of_iso.iso
+    volumes:
+      - ./app:/app
+      - ./vmedia:/vmedia
+      - ./screenshots:/screenshots
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.idrac2.rule=Host(`$IDRAC2_VAR_URL`)"
+      - "traefik.http.routers.idrac2.entrypoints=web"
+      - "traefik.http.services.homeassistant.loadbalancer.server.port=$IDRAC2_VAR_PORT"
+
