@@ -1,6 +1,6 @@
 services:
   zabbix-proxy:
-    image: zabbix/zabbix-proxy-sqlite3:latest
+    image: zabbix/zabbix-proxy-sqlite3:alpine-7.0.3
     container_name: zabbix-proxy
     restart: unless-stopped
     network_mode: host
