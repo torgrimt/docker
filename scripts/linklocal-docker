@@ -6,6 +6,16 @@
 
 l=/home/torgrimt/docker/local
 
+mkdir -p $l
+
+# Stop if local dir is gay
+if [ ! -d "$l" ]; then
+echo "local not available, exiting..."
+exit 1
+fi
+
+
+
 for fn in `docker ps --format "table {{.Names}}" | grep -v NAMES`; do
 	echo "Container: $fn"
 	c=$(docker inspect --format='{{index (index .Config.Labels "com.docker.compose.project.working_dir")}}' $fn)
