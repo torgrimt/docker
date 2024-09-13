@@ -1,0 +1,6 @@
+#!/bin/bash
+
+#
+## Puller git og oppdaterer
+
+dccd.sh -d /home/torgrimt/docker/ -g -p
