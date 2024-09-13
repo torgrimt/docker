@@ -12,7 +12,7 @@ ansible-playbook install-docker.yaml
 All defined apps.
 
 ## Scripts
-
+dccd - Updates containers
 
 ## Huskelapp
 
