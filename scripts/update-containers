@@ -3,4 +3,12 @@
 #
 ## Puller git og oppdaterer
 
+cowsay "Manual run update!"
+
+echo 
+echo "Updating links"
+linklocal-docker
+
+echo
+echo "Pulling and updating/restarting"
 dccd.sh -d /home/torgrimt/docker/ -g -p
