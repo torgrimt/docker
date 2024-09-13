@@ -14,7 +14,6 @@ All defined apps.
 ## Scripts
 dccd - Updates containers
 linklocal-docker - Makes links for local running containers
-update-docker
 
 ## Huskelapp
 
