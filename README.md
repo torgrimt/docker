@@ -19,3 +19,5 @@ linklocal-docker - Makes links for local running containers
 
 Finne version:
 docker image inspect --format '{{json .}}' "ghcr.io/netbootxyz/netbootxyz" | jq -r '. | {Id: .Id, Digest: .Digest, RepoDigests: .RepoDigests, Labels: .Config.Labels}
+
+
