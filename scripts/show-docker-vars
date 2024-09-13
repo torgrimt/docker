@@ -1,0 +1,8 @@
+#!/bin/bash
+
+#
+## Shows all docker variables from .env files
+#
+
+cd /home/torgrimt/docker/apps
+find . -name .env | xargs cat
