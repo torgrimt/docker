@@ -4,6 +4,7 @@
 ## Script for å sende ku til cecilie
 #
 
+
 if [ "$#" -eq 0 ]; then
     echo "Usage: $0 text"
 fi
