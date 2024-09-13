@@ -10,7 +10,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock # (optional) For docker integrations, see alternative methods
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.homepage.rule=Host(`homepage.tromso.snerre`)"
+      - "traefik.http.routers.homepage.rule=Host(`$HOMEPAGE_VAR_URL`)"
       - "traefik.http.routers.homepage.entrypoints=web"
     environment:
       PUID: $PUID
