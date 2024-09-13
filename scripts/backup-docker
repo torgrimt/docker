@@ -7,7 +7,7 @@
 h=$(hostname -f)
 d=$(date -I)
 backupdir="/home/$(whoami)/docker/backup/$h/docker/$d/"
-skip="zabbix-proxy portainer_agent"
+skip="zabbix-proxy portainer_agent mysql postgresql idrac-6 frigate"
 
 
 # Stop if user is not in sudo group
@@ -27,7 +27,7 @@ fi
 
 echo
 cd /home/$(whoami)/docker/
-for n in $(git ls-files -o -i --directory --exclude-standard | grep -v backup | awk -F "/" '{print $2}' | uniq )
+for n in $(git ls-files -o -i --directory --exclude-standard | grep -v backup| grep -v local | awk -F "/" '{print $2}' | uniq )
 do
 printf "[$n]\n"
 
