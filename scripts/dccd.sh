@@ -88,6 +88,8 @@ update_compose_files() {
                          if grep -q "Recreate" $TMPRESTART; then
                               log_message "GRACEFUL: Redeploying compose file for $file"
                               docker compose -f "$file" up -d --quiet-pull
+			      # Send en melding om at den er oppdatert
+                              /usr/bin/curl -H "Title: dccd" -d "Oppdaterte $file" https://ntfy.teigstad.no/test >/dev/null 2>&1
                          else
                               log_message "GRACEFUL: Skipping Redeploying compose file for $file (no change)"
                          fi
