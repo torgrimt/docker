@@ -9,10 +9,9 @@ ansible-playbook install-docker.yaml
 ```
 
 ## Apps
-her ligger alle apper...
+All defined apps.
 
 ## Scripts
-Scripts for diverse..
 
 
 ## Huskelapp
