@@ -1,0 +1,20 @@
+services:
+  librespeed:
+    image: lscr.io/linuxserver/librespeed:latest
+    container_name: librespeed
+    environment:
+      - PUID=$LIBRESPEED_VAR_PUID
+      - PGID=$LIBRESPEED_VAR_PGID
+      - TZ=$LIBRESPEED_VAR_TZ
+      - PASSWORD=$LIBRESPEED_VAR_PASSWORD
+      - CUSTOM_RESULTS=$LIBRESPEED_VAR_CUSTOM_RESULTS
+    volumes:
+      - ./config:/config
+    ports:
+      - 3480:80
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.librespeed.rule=Host(`$LIBRESPEED_VAR_URL`)"
+      - "traefik.http.routers.librespeed.entrypoints=web"
+
