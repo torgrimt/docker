@@ -14,6 +14,6 @@ services:
       - "traefik.http.routers.uptime.rule=Host(`$UPTIMEKUMA_VAR_URL`)"
       - "traefik.http.routers.uptime.entrypoints=web"
     environment:
-      PUID: $PUID
-      PGID: $PGID
+      PUID: $UPTIMEKUMA_VAR_PUID
+      PGID: $UPTIMEKUMA_VAR_PGID
 
