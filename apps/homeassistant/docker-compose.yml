@@ -1,0 +1,24 @@
+services:
+  homeassistant:
+    container_name: homeassistant
+    image: ghcr.io/home-assistant/home-assistant:2024.9.1
+    network_mode: host
+    env_file: .env
+    volumes:
+      - ./config:/config
+      - /etc/localtime:/etc/localtime:ro
+      - /run/dbus:/run/dbus:ro
+    # devices:
+    #   - /dev/ttyACMO  # (optional) Add serial devices to the container
+    privileged: true
+    restart: unless-stopped
+    environment:
+      - TZ=$HOMEASSISTANT_VAR_TZ # Specify a timezone to use
+      - PUID=$HOMEASSISTANT_VAR_PUID # User ID to run as
+      - PGID=$HOMEASSISTANT_VAR_PGID # Group ID to run as
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.homeassistant.rule=Host(`$HOMEASSISTANT_VAR_URL`)"
+      - "traefik.http.routers.homeassistant.entrypoints=web"
+      - "traefik.http.services.homeassistant.loadbalancer.server.port=8123"
+
