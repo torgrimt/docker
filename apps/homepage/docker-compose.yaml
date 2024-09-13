@@ -13,6 +13,6 @@ services:
       - "traefik.http.routers.homepage.rule=Host(`$HOMEPAGE_VAR_URL`)"
       - "traefik.http.routers.homepage.entrypoints=web"
     environment:
-      PUID: $PUID
-      PGID: $PGID
+      PUID: $HOMEPAGE_VAR_PUID
+      PGID: $HOMEPAGE_VAR_PGID
     restart: unless-stopped
