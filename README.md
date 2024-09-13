@@ -1,9 +1,17 @@
 # docker
-Docker compose filer for diverse homelab stash.
+Poor mans docker compose ci/cd system.
+Could not find what i was looking for, so i hacked it together with some ductape and string.
 
-## install via ansible
+The idea is to have small intel nucs running different places, that share a codebase in apps controlled by its own .env file.
+Renovatebot runs and updates the imagetags, and dccd is used to pull from git and run docker-compose to update them.
+
+Usage:
+git pull github.com/torgrimt/docker.git
+
+## install docker via ansible
+If no ansible server is setup, you can use the following to pull and install docker from the official repos.
 ```
-echo "torgrimt    ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/admin
+echo "username    ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/admin
 ansible-galaxy role install -r requirements.yml
 ansible-playbook install-docker.yaml
 ```
@@ -12,12 +20,12 @@ ansible-playbook install-docker.yaml
 All defined apps.
 
 ## Scripts
-dccd - Updates containers
-linklocal-docker - Makes links for local running containers
+|Script         |Description|
+|---------      |-----------------------------------------------|
+|dccd| Updates containers|
+|linklocal-docker|Makes links for local running containers|
 
-## Huskelapp
-
-Finne version:
+## Handy commands:
 docker image inspect --format '{{json .}}' "ghcr.io/netbootxyz/netbootxyz" | jq -r '. | {Id: .Id, Digest: .Digest, RepoDigests: .RepoDigests, Labels: .Config.Labels}
 
 
