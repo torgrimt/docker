@@ -9,7 +9,6 @@ It used traefik as an "ingress" to proxy all the apps if needed. Controlled by a
 Some of the apps templates are stolen from [Christian Lempa boilerplate](https://github.com/ChristianLempa/boilerplates/tree/main/docker-compose) repository, and modified to my needs.
 And its using a modified version of [dccd](https://github.com/loganmarchione/dccd) thats using docker-compose --dry-run to only restart containers that needs too be.
 The srccode for my version you can find [here](https://github.com/torgrimt/dccd)
-
 It requires atleast git and docker to be installed.
 
 ## install docker via ansible
