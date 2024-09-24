@@ -1,0 +1,17 @@
+---
+services:
+  syslogng:
+    image: lscr.io/linuxserver/syslog-ng:latest
+    container_name: syslogng
+    environment:
+      - PUID=$SYSLOGNG_VAR_PUID
+      - PGID=$SYSLOGNG_VAR_PGID
+      - TZ=$SYSLOGNG_VAR_TZ
+    volumes:
+      - ./config:/config
+      - ./log:/var/log #optional
+    ports:
+      - 514:5514/udp
+      - 601:6601/tcp
+      - 6514:6514/tcp
+    restart: unless-stopped
