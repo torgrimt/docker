@@ -1,6 +1,6 @@
 services:
   mosquitto:
-    image: eclipse-mosquitto:2.0.18
+    image: eclipse-mosquitto:2.0.19
     hostname: mosquitto
     container_name: mosquitto
     restart: unless-stopped
