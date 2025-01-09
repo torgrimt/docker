@@ -1,6 +1,6 @@
 services:
   openhab:
-    image: openhab/openhab:4.3.0-debian
+    image: openhab/openhab:4.3.1-debian
     container_name: openhab
     env_file: .env
     volumes:
