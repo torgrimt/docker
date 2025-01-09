@@ -1,7 +1,7 @@
 ---
 services:
   syslogng:
-    image: lscr.io/linuxserver/syslog-ng:4.7.1
+    image: lscr.io/linuxserver/syslog-ng:4.8.1
     container_name: syslogng
     environment:
       - PUID=$SYSLOGNG_VAR_PUID
