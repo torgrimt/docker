@@ -3,7 +3,7 @@
 #
 
 OPENHAB_VAR_URL=openhab.something.com
-EXTRA_JAVA_OPTS="-Duser.timezone=Europe/Berlin -Dorg.jupnp.network.useInterfaces=eno1 -Dorg.jupnp.network.useAddresses=192.168.0.65"
+OPENHAB_EXTRA_JAVA_OPTS="-Duser.timezone=Europe/Berlin -Dorg.jupnp.network.useInterfaces=eno1 -Dorg.jupnp.network.useAddresses=192.168.0.65"
 OPENHAB_VAR_HTTP_PORT=8780
 OPENHAB_VAR_HTTPS_PORT=8743
 OPENHAB_VAR_USER_ID=9001
