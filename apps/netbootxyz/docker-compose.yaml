@@ -1,6 +1,6 @@
 services:
   netbootxyz:
-    image: ghcr.io/netbootxyz/netbootxyz:0.7.3-nbxyz1
+    image: ghcr.io/netbootxyz/netbootxyz:0.7.4-nbxyz1
     container_name: netboot
     env_file: .env
     #environment:
