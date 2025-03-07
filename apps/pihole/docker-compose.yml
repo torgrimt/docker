@@ -27,7 +27,7 @@ services:
 
   piexporter:
     container_name: piexporter
-    image: ekofr/pihole-exporter:v1.0.0
+    image: ekofr/pihole-exporter:v1.0.1
     env_file: .env
     restart: unless-stopped
     ports:
