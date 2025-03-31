@@ -1,5 +1,5 @@
 # docker
-Poor mans docker compose ci/cd system.
+Poor mans docker compose ci/cd system. 
 Could not find what i was looking for, so i hacked it together with some ductape and string.
 
 The idea is to have small intel nucs running different places, that share a codebase in apps controlled by its own .env file.
