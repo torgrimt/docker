@@ -1,0 +1,16 @@
+services:
+  homebridge:
+    image: homebridge/homebridge:2025-05-14
+    container_name: homebridge
+    env_file: .env
+    network_mode: host
+    volumes:
+      - ./homebridge:/homebridge
+    #ports:
+    #  - 8581:8581 # Webapp
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.homebridge.rule=Host(`$HOMEBRIDGE_VAR_URL`)"
+      - "traefik.http.routers.homebridge.entrypoints=web"
+
