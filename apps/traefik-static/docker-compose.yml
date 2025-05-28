@@ -1,0 +1,44 @@
+version: "3.3"
+
+services:
+
+  traefik:
+    image: "traefik:v3.4.1"
+    container_name: "traefik"
+    command:
+      #- "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entryPoints.websecure.address=:443"
+      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+      #- "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
+      - "--certificatesresolvers.myresolver.acme.email=torgrimt@oppetid.no"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+    ports:
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - "./letsencrypt:/letsencrypt"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
+  webserver:
+    image: "nginx:alpine"
+    container_name: "my-static-site"
+    restart: unless-stopped
+    volumes:
+      # Mount your static files (e.g., from a local ./html directory)
+      - ./html:/usr/share/nginx/html:ro
+      # Mount your custom Nginx configuration
+      # - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      # Mount for Nginx logs (optional, but useful)
+      - ./nginx-logs:/var/log/nginx
+    labels:
+      - "traefik.enable=true"
+      # --- Router for HTTPS ---
+      - "traefik.http.routers.my-static-site-secure.rule=Host(`drott.teigstad.no`)" # !!! REPLACE with your actual domain !!!
+      - "traefik.http.routers.my-static-site-secure.entrypoints=websecure"
+      - "traefik.http.routers.my-static-site-secure.tls=true"
+      - "traefik.http.routers.my-static-site-secure.tls.certresolver=myresolver"
+      # --- Service definition ---
+      #- "traefik.http.services.my-static-site-service.loadbalancer.server.port=80" # Nginx listens on port 80 internally
