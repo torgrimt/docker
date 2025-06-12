@@ -1,44 +1,77 @@
-version: "3.3"
-
 services:
-
   traefik:
-    image: "traefik:v3.4.1"
+    image: "traefik:v3.0"
     container_name: "traefik"
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      # - "8080:8080" # Uncomment to expose the Traefik dashboard
     command:
-      #- "--log.level=DEBUG"
-      - "--api.insecure=true"
+      - "--api.dashboard=true" # Use the secure dashboard
+      # - "--log.level=DEBUG"
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
-      - "--entryPoints.websecure.address=:443"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
       - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
-      #- "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
       - "--certificatesresolvers.myresolver.acme.email=torgrimt@oppetid.no"
       - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
-    ports:
-      - "443:443"
-      - "8080:8080"
     volumes:
       - "./letsencrypt:/letsencrypt"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "./traefik-data:/data" # Added volume for Traefik's own data
+    networks:
+      - web # Assign Traefik to the new network
+    labels:
+      # Optional: Secure the Traefik dashboard itself with HTTPS
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik-dashboard.rule=Host(`traefik.yourdomain.com`)" # Change to your domain
+      - "traefik.http.routers.traefik-dashboard.entrypoints=websecure"
+      - "traefik.http.routers.traefik-dashboard.service=api@internal"
+      - "traefik.http.routers.traefik-dashboard.tls.certresolver=myresolver"
+      # - "traefik.http.routers.traefik-dashboard.middlewares=auth" # Uncomment to add authentication
+      # - "traefik.http.middlewares.auth.basicauth.users=user:$$apr1$$...$$" # Add your user/pass here
 
-  webserver:
+  skinnheis:
     image: "nginx:alpine"
-    container_name: "my-static-site"
+    container_name: "skinnheis" # Renamed for consistency
     restart: unless-stopped
     volumes:
-      # Mount your static files (e.g., from a local ./html directory)
       - ./html:/usr/share/nginx/html:ro
-      # Mount your custom Nginx configuration
-      # - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
-      # Mount for Nginx logs (optional, but useful)
       - ./nginx-logs:/var/log/nginx
+    networks:
+      - web # Assign Nginx to the new network
     labels:
       - "traefik.enable=true"
-      # --- Router for HTTPS ---
-      - "traefik.http.routers.my-static-site-secure.rule=Host(`drott.teigstad.no`)" # !!! REPLACE with your actual domain !!!
-      - "traefik.http.routers.my-static-site-secure.entrypoints=websecure"
-      - "traefik.http.routers.my-static-site-secure.tls=true"
-      - "traefik.http.routers.my-static-site-secure.tls.certresolver=myresolver"
-      # --- Service definition ---
-      #- "traefik.http.services.my-static-site-service.loadbalancer.server.port=80" # Nginx listens on port 80 internally
+      - "traefik.http.routers.skinnheis.rule=Host(`skinnheis.nl`)"
+      - "traefik.http.routers.skinnheis.entrypoints=websecure"
+      - "traefik.http.routers.skinnheis.tls.certresolver=myresolver"
+      - "traefik.http.services.skinnheis.loadbalancer.server.port=80" # CORRECTED: Point to the internal Nginx port
+
+  share:
+    image: mtlynch/picoshare
+    environment:
+      - PORT=4001
+      - PS_SHARED_SECRET=italia2025 # Change to any password
+    ports:
+      - 4001:4001
+    command: -db /data/store.db
+    volumes:
+      - ./sharedata:/data
+    networks:
+      - web # Assign Nginx to the new network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.share.rule=Host(`share.skinnheis.nl`)"
+      - "traefik.http.routers.share.entrypoints=websecure"
+      - "traefik.http.routers.share.tls.certresolver=myresolver"
+      - "traefik.http.services.share.loadbalancer.server.port=4001" # CORRECTED: Point to the internal Nginx port
+
+
+# Define the shared network
+networks:
+  web:
+    driver: bridge

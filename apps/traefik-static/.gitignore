@@ -1,3 +1,4 @@
 letsencrypt/**
 nginx-logs/**
 html/**
+sharedata/**
