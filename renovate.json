@@ -110,6 +110,27 @@
       "matchPackageNames": [
         "/^([^/]+\\/)*semaphore(:.+)?$/"
       ]
+    },
+    {
+      "description": "Update Homebridge Docker image using date-based tags",
+      "matchManagers": [
+        "docker-compose",
+        "dockerfile"
+      ],
+      "matchPackageNames": [
+        "homebridge/homebridge"
+      ],
+      "versioning": "regex:^\\d{4}-\\d{2}-\\d{2}$",
+      "datasource": "docker",
+      "major": {
+        "enabled": false
+      },
+      "minor": {
+        "enabled": true
+      },
+      "patch": {
+        "enabled": true
+      }
     }
   ],
   "customManagers": [
