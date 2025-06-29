@@ -15,4 +15,5 @@ services:
     environment:
       PUID: $HOMEPAGE_VAR_PUID
       PGID: $HOMEPAGE_VAR_PGID
+      HOMEPAGE_ALLOWED_HOSTS: $HOMEPAGE_VAR_HOMEPAGE_ALLOWED_HOSTS
     restart: unless-stopped
