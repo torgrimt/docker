@@ -1,7 +1,7 @@
 services:
   agent:
     container_name: portainer-agent
-    image: portainer/agent:2.34.0
+    image: portainer/agent:2.35.0
     restart: always
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
