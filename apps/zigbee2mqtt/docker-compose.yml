@@ -16,7 +16,8 @@ services:
       - PGID=$ZIGBEE2MQTT_VAR_PGID
     devices:
       # Make sure this matched your adapter location
-      - $ZIGBEE2MQTT_VAR_DONGLE:/dev/ttyACM0
+      #- $ZIGBEE2MQTT_VAR_DONGLE:/dev/ttyACM0
+      - $ZIGBEE2MQTT_VAR_DONGLE:/dev/ttyUSB0
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.zigbee2mqtt.rule=Host(`$ZIGBEE2MQTT_VAR_HOSTNAME`)"
