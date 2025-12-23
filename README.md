@@ -15,6 +15,8 @@ It requires atleast git and docker to be installed.
 If no ansible server is setup, you can use the following to pull and install docker from the official repos.
 ```
 echo "username    ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/admin
+sudo apt-get install git ansible
+git clone https://github.com/torgrimt/docker.git
 ansible-galaxy role install -r requirements.yml
 ansible-playbook install-docker.yaml
 ```
