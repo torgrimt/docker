@@ -1,18 +1,23 @@
 services:
-
   traefik:
     image: "traefik:v3.6.8"
     container_name: "traefik"
     network_mode: host
     command:
-      #- "--log.level=DEBUG"
       - "--api.insecure=true"
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
-      - "--entryPoints.web.address=:80"
-    ports:
-      - "80:80"
+      # Entrypoints
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      #- "--entrypoints.tailscale.address=:8080" # Bruk en port som passer ditt oppsett
+      # HTTP til HTTPS redirect
+      - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
+      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+      - "--certificatesresolvers.myresolver.acme.email=torgrimt@oppetid.no"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "./letsencrypt:/letsencrypt" # For lagring av sertifikater
     restart: unless-stopped
-
