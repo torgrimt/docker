@@ -8,3 +8,6 @@ backup/**
 # Lokale variaasjoner liker vi
 local/**
 apps/local/**
+
+# Ikke ta med traefik sine serts
+apps/traefik/letsencrypt/**
