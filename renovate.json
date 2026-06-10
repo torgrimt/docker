@@ -18,6 +18,14 @@
   },
   "packageRules": [
     {
+      "description": "Automerge minor and patch updates",
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "automerge": true
+    },
+    {
       "groupName": "devDependencies (non-major)",
       "matchDepTypes": [
         "devDependencies",
