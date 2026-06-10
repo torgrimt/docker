@@ -18,12 +18,13 @@
   },
   "packageRules": [
     {
-      "description": "Automerge minor and patch updates",
+      "description": "Automerge minor and patch updates without waiting for CI tests",
       "matchUpdateTypes": [
         "minor",
         "patch"
       ],
-      "automerge": true
+      "automerge": true,
+      "ignoreTests": true
     },
     {
       "groupName": "devDependencies (non-major)",
