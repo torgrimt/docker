@@ -1,6 +1,6 @@
 services:
   librespeed:
-    image: lscr.io/linuxserver/librespeed:6.1.0
+    image: lscr.io/linuxserver/librespeed:6.2.0
     container_name: librespeed
     environment:
       - PUID=$LIBRESPEED_VAR_PUID
