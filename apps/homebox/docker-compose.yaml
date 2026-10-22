@@ -1,6 +1,6 @@
 services:
   homebox:
-    image: ghcr.io/sysadminsmedia/homebox:v0.27.0
+    image: ghcr.io/sysadminsmedia/homebox:latest
     container_name: homebox
     restart: unless-stopped
     ports:
