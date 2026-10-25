@@ -1,0 +1,25 @@
+services:
+  hermes:
+    image: nousresearch/hermes-agent:v0.22.5
+    container_name: hermes
+    restart: unless-stopped
+    command: gateway run
+    ports:
+      - "8642:8642" # Gateway API
+      - "9119:9119" # Web-dashboard
+    volumes:
+      - ./hermes:/opt/data
+    environment:
+      HERMES_DASHBOARD: "1"
+      HERMES_DASHBOARD_BASIC_AUTH_USERNAME: ${HERMES_VAR_USERNAME}
+      HERMES_DASHBOARD_BASIC_AUTH_PASSWORD: ${HERMES_VAR_PASSWORD}
+      TZ: ${HERMES_VAR_TZ}
+      PUID: ${HERMES_VAR_PUID}
+      PGID: ${HERMES_VAR_PGID}
+    sysctls:
+      net.ipv6.conf.all.disable_ipv6: 1
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+          cpus: "2.0"
