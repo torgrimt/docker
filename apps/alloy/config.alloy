@@ -89,12 +89,33 @@ loki.source.syslog "network" {
   forward_to    = [loki.process.filter.receiver]
 }
 
-// ---- filtering -------------------------------------------------------------
+// ---- filtering and parsing -------------------------------------------------
 // Container log files are read from the start on first run, which means weeks
-// of history. Loki rejects samples older than reject_old_samples_max_age, so
+// of history; Loki rejects samples older than reject_old_samples_max_age, so
 // drop anything outside the ingest window instead of retrying it forever.
+//
+// KT-NOS switches send "<pri>*Oct 28 2026 11:23:59: %AAA-5-CONNECT: ..." with
+// no hostname field, so parse that header explicitly and keep the useful parts
+// as labels.
 
 loki.process "filter" {
+  stage.regex {
+    expression = `^\*?(?P<timestamp>[A-Z][a-z]{2} +[0-9]{1,2} [0-9]{4} [0-9]{2}:[0-9]{2}:[0-9]{2}): %(?P<app>[A-Z]+)-(?P<severity>[0-9])-(?P<mnemonic>[A-Za-z0-9_-]+): (?P<message>.*)$`
+  }
+
+  stage.timestamp {
+    source = "timestamp"
+    format = "Jan _2 2006 15:04:05"
+  }
+
+  stage.labels {
+    values = {
+      app      = "",
+      severity = "",
+      mnemonic = "",
+    }
+  }
+
   stage.drop {
     older_than          = "168h"
     drop_counter_reason = "older_than_ingest_window"
