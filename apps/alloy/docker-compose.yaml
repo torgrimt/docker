@@ -1,6 +1,15 @@
+# Alloy shipper: this host's container logs and any syslog it receives -> the
+# central Loki. Provide these four in a gitignored .env next to this file
+# (one .env per host; nothing secret is tracked here):
+#
+#   ALLOY_CLUSTER_NAME   label for the site, e.g. the cluster slug
+#   ALLOY_LOKI_URL       full push URL, .../loki/api/v1/push
+#   ALLOY_LOKI_USER      basic-auth user in front of Loki
+#   ALLOY_LOKI_PASS      that user's password
+
 services:
   alloy:
-    image: grafana/alloy:v1.21.3
+    image: grafana/alloy:v1.21.2
     container_name: alloy
     restart: unless-stopped
     command:
