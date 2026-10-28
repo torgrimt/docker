@@ -11,3 +11,7 @@ apps/local/**
 
 # Ikke ta med traefik sine serts
 apps/traefik/letsencrypt/**
+
+# backup-filer holdes utenfor repoet: en skitten worktree stopper dccd
+*.bak
+*.bak-*
