@@ -1,0 +1,121 @@
+// Ships this host's docker container logs and any syslog it receives
+// (UDP/TCP 1514) to the central Loki on red. Cluster label: nl-home.
+
+logging {
+  level  = "info"
+  format = "logfmt"
+}
+
+// ---- docker container logs -------------------------------------------------
+
+discovery.docker "containers" {
+  host = "unix:///var/run/docker.sock"
+}
+
+discovery.relabel "docker" {
+  targets = []
+
+  rule {
+    source_labels = ["__meta_docker_container_name"]
+    regex         = "/?(.*)"
+    target_label  = "container"
+  }
+  rule {
+    source_labels = ["__meta_docker_container_log_stream"]
+    target_label  = "stream"
+  }
+  rule {
+    source_labels = ["__meta_docker_container_label_com_docker_compose_project"]
+    target_label  = "compose_project"
+  }
+  rule {
+    target_label = "job"
+    replacement  = "docker"
+  }
+  rule {
+    target_label = "cluster"
+    replacement  = sys.env("CLUSTER_NAME")
+  }
+}
+
+loki.source.docker "containers" {
+  host             = "unix:///var/run/docker.sock"
+  targets          = discovery.docker.containers.targets
+  relabel_rules    = discovery.relabel.docker.rules
+  refresh_interval = "30s"
+  forward_to       = [loki.process.filter.receiver]
+}
+
+// ---- syslog from switches, routers and appliances --------------------------
+
+discovery.relabel "syslog" {
+  targets = []
+
+  rule {
+    source_labels = ["__syslog_message_hostname"]
+    target_label  = "host"
+  }
+  rule {
+    source_labels = ["__syslog_message_app_name"]
+    target_label  = "app"
+  }
+  rule {
+    source_labels = ["__syslog_message_severity"]
+    target_label  = "severity"
+  }
+  rule {
+    target_label = "job"
+    replacement  = "syslog"
+  }
+  rule {
+    target_label = "cluster"
+    replacement  = sys.env("CLUSTER_NAME")
+  }
+}
+
+loki.source.syslog "network" {
+  listener {
+    address       = "0.0.0.0:1514"
+    protocol      = "udp"
+    syslog_format = "rfc3164"
+  }
+  listener {
+    address       = "0.0.0.0:1514"
+    protocol      = "tcp"
+    syslog_format = "rfc3164"
+  }
+
+  relabel_rules = discovery.relabel.syslog.rules
+  forward_to    = [loki.process.filter.receiver]
+}
+
+// ---- filtering -------------------------------------------------------------
+// Container log files are read from the start on first run, which means weeks
+// of history. Loki rejects samples older than reject_old_samples_max_age, so
+// drop anything outside the ingest window instead of retrying it forever.
+
+loki.process "filter" {
+  stage.drop {
+    older_than          = "168h"
+    drop_counter_reason = "older_than_ingest_window"
+  }
+
+  forward_to = [loki.write.loki.receiver]
+}
+
+// ---- output ----------------------------------------------------------------
+
+loki.write "loki" {
+  endpoint {
+    url = sys.env("LOKI_URL")
+
+    basic_auth {
+      username = sys.env("LOKI_USER")
+      password = sys.env("LOKI_PASS")
+    }
+  }
+
+  external_labels = {
+    cluster = sys.env("CLUSTER_NAME"),
+  }
+}
