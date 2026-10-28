@@ -8,6 +8,8 @@ services:
       - /etc/alloy/config.alloy
       - --storage.path=/var/lib/alloy/data
       - --server.http.listen-addr=0.0.0.0:12345
+      # "raw" syslog parsing (KT-NOS headers) is an experimental feature
+      - --stability.level=experimental
     ports:
       - "1514:1514/udp"
       - "1514:1514/tcp"

@@ -1,0 +1,11 @@
+#
+## Copy this file to .env
+#
+## Loki push endpoint. The URL carries the /loki/api/v1/push path; the
+## credentials are the basic-auth user behind https://loki.teigstad.no.
+## One Alloy per site, each with its own CLUSTER_NAME label.
+
+ALLOY_CLUSTER_NAME=nl-home
+ALLOY_LOKI_URL=https://loki.teigstad.no/loki/api/v1/push
+ALLOY_LOKI_USER=sentry
+ALLOY_LOKI_PASS=
